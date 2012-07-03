@@ -4,6 +4,14 @@ define ('EASYAUTH_DEBUG', FALSE);
 
 if (!function_exists('__'))
 {
+	/**
+	 * __()
+	 *
+	 * This is a mimic of the i18n __ wordpress function
+	 *
+	 * @param string $string The string to translate
+	 * @return string The translated string
+	 */
 	function __($string)
 	{
 		$translated = FALSE;
@@ -15,6 +23,14 @@ if (!function_exists('__'))
 	}
 }
 
+/**
+ * Codeigniter-Easyauth
+ *
+ * @package codeigniter-easyauth
+ * @author Yvo van Dillen
+ * @copyright Atomicon
+ * @access public
+ */
 class Easyauth
 {
     protected $_ci = null;
@@ -22,24 +38,27 @@ class Easyauth
     protected $_config = null;
     protected $_messages = array();
 
+    /**
+     * Easyauth::__construct()
+     *
+     * Initializes codeigniter-easyauth
+     *
+     * @return
+     */
     function __construct()
     {
         $this->_ci = &get_instance();
         $this->_config = config_item('easyauth');
     }
 
-    //getters and setters
-
-    function config($name, $default = FALSE)
-    {
-    	return isset($this->_config[$name]) ? $this->_config[$name] : $default;
-    }
-
-    function set_config($name, $value)
-    {
-    	$this->_config[$name] = $value;
-    }
-
+	/**
+	 * Easyauth::user_id()
+	 *
+	 * This will return the user_id
+	 * If the session failes it will try to get it via the cookie
+	 *
+	 * @return mixed integer (user id) or FALSE on failure
+	 */
 	function user_id()
 	{
 		$user_id = $this->_ci->session->userdata( $this->config('session_key') );
@@ -60,69 +79,27 @@ class Easyauth
   		return $this->_ci->session->userdata( $this->config('session_key') );
 	}
 
-	function set_user_id($id)
-	{
-		if ($id)
-		{
-			$this->_ci->session->set_userdata( $this->config('session_key'), $id );
-		}
-		else
-		{
-			$this->_ci->session->unset_userdata( $this->config('session_key') );
-		}
-	}
-
-	function user()
-	{
-		if (!$this->_user)
-		{
-			$query = $this->_ci->db->get_where($this->config('table'), array('id' => $this->user_id()), 1);
-			$this->_user = $query->row_object();
-		}
-		return $this->_user;
-	}
-
-	function set_user($object)
-	{
-		$this->_user = $object;
-	}
-
+	/**
+	 * Easyauth::logged_in()
+	 *
+	 * Same as user_id only this returns a real boolean
+	 *
+	 * @return boolean TRUE or FALSE
+	 */
 	function logged_in()
 	{
 		return $this->user_id() !== FALSE;
 	}
 
-	function messages()
-	{
-		return $this->_messages;
-	}
+	// functions (called by controllers) ====================================================================
 
-	function html_messages()
-	{
-		$html = '';
-		$html_message = $this->config('html_message', '<div class="alert alert-{type}"><button class="close" data-dismiss="alert">&times;</button>{message}</div>');
-		foreach($this->messages() as $message)
-		{
-			$item = $html_message;
-			foreach($message as $key=>$value)
-			{
-				$item = str_replace('{'.$key.'}', $value, $item);
-			}
-			$html .= $item;
-		}
-		return $html;
-	}
-
-	function add_message($message, $type = 'error')
-	{
-		$this->_messages[] = array(
-			'message' => $message,
-			'type' => $type,
-		);
-	}
-
-	// functions (called by controllers)
-
+ 	/**
+ 	 * Easyauth::register()
+ 	 *
+ 	 * @param string $email
+ 	 * @param string $password
+ 	 * @return boolean TRUE on success and FALSE on failure
+ 	 */
  	function register($email, $password)
  	{
  		if ($email === FALSE && $password === FALSE)
@@ -159,6 +136,17 @@ class Easyauth
 		return TRUE;
  	}
 
+  	/**
+  	 * Easyauth::login()
+  	 *
+  	 * Tries to login
+  	 * on error make sure you check the messages
+  	 *
+  	 * @param string $email
+  	 * @param string $password
+  	 * @param boolean $remember
+  	 * @return boolean TRUE on success and FALSE on failure
+  	 */
   	function login($email = FALSE, $password = FALSE, $remember = FALSE)
   	{
   		if ($email === FALSE || $password === FALSE)
@@ -195,6 +183,13 @@ class Easyauth
 		return TRUE;
   	}
 
+  	/**
+  	 * Easyauth::logout()
+  	 *
+  	 * Logs out the user
+  	 *
+  	 * @return void
+  	 */
   	function logout()
   	{
 		$this->set_user_id(NULL);
@@ -205,6 +200,16 @@ class Easyauth
 		}
   	}
 
+  	/**
+  	 * Easyauth::forgot()
+  	 *
+  	 * If a user forgot a password, in this function an email
+  	 * will be created and will be send to the user with a reset link
+  	 *
+  	 * @param string $email The users email address
+  	 * @param string $reset_url (default=auth/reset)
+  	 * @return boolean TRUE on success and FALSE on failure
+  	 */
   	function forgot($email, $reset_url = 'auth/reset')
   	{
   		if ($email == FALSE)
@@ -266,6 +271,13 @@ class Easyauth
 		return FALSE;
   	}
 
+  	/**
+  	 * Easyauth::reset()
+  	 *
+  	 * @param string $forgot The secret hash received per email
+  	 * @param string $password The new password for the user
+  	 * @return boolean TRUE on success and FALSE on failure
+  	 */
   	function reset($forgot, $password)
   	{
 		$query = $this->_ci->db->get_where( $this->config('table'), array('forgot' => $forgot), 1);
@@ -285,7 +297,14 @@ class Easyauth
 		return FALSE;
   	}
 
-  	function profile($email = FALSE, $password = FALSE, $data = array())
+  	/**
+  	 * Easyauth::profile()
+  	 *
+  	 * @param string $email New email address
+  	 * @param string $password New password
+  	 * @return boolean TRUE on success and FALSE on failure
+  	 */
+  	function profile($email = FALSE, $password = FALSE)
   	{
   		$user = $this->user();
   		if (!$user)
@@ -293,7 +312,7 @@ class Easyauth
   			return FALSE;
   		}
 
-  		$data = is_array($data) ? $data : array();
+  		$data = array();
   		if (trim($email)!='')
   		{
   			$data['email'] = $email;
@@ -316,5 +335,134 @@ class Easyauth
 		}
 		return TRUE;
   	}
+
+  	// messages ========================================================================================
+
+  	/**
+	 * Easyauth::messages()
+	 *
+	 * Returns all messages
+	 *
+	 * @return array
+	 */
+	function messages()
+	{
+		return $this->_messages;
+	}
+
+	/**
+	 * Easyauth::html_messages()
+	 *
+	 * Returns all messages but formatted as html
+	 *
+	 * @return string
+	 */
+	function html_messages()
+	{
+		$html = '';
+		$html_message = $this->config('html_message', '<div class="alert alert-{type}"><button class="close" data-dismiss="alert">&times;</button>{message}</div>');
+		foreach($this->messages() as $message)
+		{
+			$item = $html_message;
+			foreach($message as $key=>$value)
+			{
+				$item = str_replace('{'.$key.'}', $value, $item);
+			}
+			$html .= $item;
+		}
+		return $html;
+	}
+
+	/**
+	 * Easyauth::add_message()
+	 *
+	 * @param string $message The message
+	 * @param string $type (can be 'error', 'info', 'success' or 'warning')
+	 * @return void
+	 */
+	function add_message($message, $type = 'error')
+	{
+		$this->_messages[] = array(
+			'message' => $message,
+			'type' => $type,
+		);
+	}
+
+  	// getters & setters ====================================================================================
+
+
+    /**
+     * Easyauth::config()
+     *
+     * @param string $name The config item to get
+     * @param mixed $default The default value if the $name is not found
+     * @return mixed
+     */
+    function config($name, $default = FALSE)
+    {
+    	return isset($this->_config[$name]) ? $this->_config[$name] : $default;
+    }
+
+    /**
+     * Easyauth::set_config()
+     *
+     * @param string $name The config item to set
+     * @param mixed $value The value config the config item
+     * @return void
+     */
+    function set_config($name, $value)
+    {
+    	$this->_config[$name] = $value;
+    }
+
+  	/**
+	 * Easyauth::set_user_id()
+	 *
+	 * Set the current user_id
+	 *
+	 * @param integer $id The user id
+	 * @return void
+	 */
+	function set_user_id($id)
+	{
+		if ($id)
+		{
+			$this->_ci->session->set_userdata( $this->config('session_key'), $id );
+		}
+		else
+		{
+			$this->_ci->session->unset_userdata( $this->config('session_key') );
+		}
+	}
+
+	/**
+	 * Easyauth::user()
+	 *
+	 * Returns the user object (all row fields)
+	 *
+	 * @return object or FALSE
+	 */
+	function user()
+	{
+		if (!$this->_user)
+		{
+			$query = $this->_ci->db->get_where($this->config('table'), array('id' => $this->user_id()), 1);
+			$this->_user = $query->row_object();
+		}
+		return $this->_user;
+	}
+
+	/**
+	 * Easyauth::set_user()
+	 *
+	 * Sets the user object
+	 *
+	 * @param object $object User object
+	 * @return
+	 */
+	function set_user($object)
+	{
+		$this->_user = $object;
+	}
 
 }

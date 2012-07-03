@@ -1,7 +1,24 @@
 <?php
 
+/**
+ * Auth Controller
+ *
+ * This is an example controller.
+ * You can strip/add anything to it.
+ * Copy this file to your controllers folder
+ *
+ * @package codeigniter-easyauth
+ * @author Yvo van Dillen
+ * @version $Id$
+ * @access public
+ */
 class Auth extends CI_Controller
 {
+	/**
+	 * Auth::__construct()
+	 *
+	 * @return
+	 */
 	function __construct()
 	{
 		parent::__construct();
@@ -9,6 +26,14 @@ class Auth extends CI_Controller
 		$this->load->helper( array('url', 'form', 'html') );
 	}
 
+	/**
+	 * Auth::index()
+	 *
+	 * If the user is logged in it will relay to the profile function
+	 * else it will relay to the login screen
+	 *
+	 * @return
+	 */
 	function index()
 	{
 		if ($this->easyauth->logged_in())
@@ -21,6 +46,13 @@ class Auth extends CI_Controller
 		}
 	}
 
+	/**
+	 * Auth::login()
+	 *
+	 * The login screen, on success it will redirect to /
+	 *
+	 * @return
+	 */
 	function login()
 	{
 		$email    = $this->input->post('email');
@@ -42,12 +74,26 @@ class Auth extends CI_Controller
 		$this->load->view('auth/login', $data);
 	}
 
+	/**
+	 * Auth::logout()
+	 *
+	 * This will log you out and redirect to /
+	 *
+	 * @return
+	 */
 	function logout()
 	{
 		$this->easyauth->logout();
 		redirect('/');
 	}
 
+	/**
+	 * Auth::register()
+	 *
+	 * This will register a user
+	 *
+	 * @return
+	 */
 	function register()
 	{
 		$email     = $this->input->post('email');
@@ -79,6 +125,14 @@ class Auth extends CI_Controller
 		$this->load->view('auth/register', $data);
 	}
 
+	/**
+	 * Auth::forgot()
+	 *
+	 * If a user forgot the password here it can enter
+	 * the email address and a reset link will be mailed
+	 *
+	 * @return
+	 */
 	function forgot()
 	{
 		$email    = $this->input->post('email');
@@ -96,6 +150,14 @@ class Auth extends CI_Controller
 		$this->load->view('auth/forgot', $data);
 	}
 
+	/**
+	 * Auth::reset()
+	 *
+	 * This is the link that will reset the users password
+	 *
+	 * @param string $forgot This is the hash that will be provided in the mail
+	 * @return
+	 */
 	function reset($forgot = null)
 	{
 		if (!$forgot)
@@ -125,6 +187,13 @@ class Auth extends CI_Controller
 		$this->load->view('auth/reset', $data);
 	}
 
+	/**
+	 * Auth::profile()
+	 *
+	 * Here the user can change a few settings
+	 *
+	 * @return
+	 */
 	function profile()
 	{
 		if (!$this->easyauth->logged_in())
