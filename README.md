@@ -10,6 +10,7 @@ Easyauth is very configurable.
 How to use:
 
 - Run the SQL file (it is in the folder 'sql')
+- Copy the easyauth.php from config to your application/config folder
 - Copy the Auth.php from controllers to your application/controllers folder
 - Copy the folder 'easyauth' from views to your application/views folder
 
