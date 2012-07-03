@@ -90,7 +90,7 @@ class Auth extends CI_Controller
 	/**
 	 * Auth::register()
 	 *
-	 * This will register a user
+	 * This will register a user and redirect to the login screen
 	 *
 	 * @return
 	 */
@@ -106,7 +106,7 @@ class Auth extends CI_Controller
 			{
 				if ($this->easyauth->register($email, $password))
 				{
-					redirect('/');
+					redirect('auth/login');
 				}
 			}
 			else
