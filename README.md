@@ -1,4 +1,4 @@
-codeigniter-easyauth
+Codeigniter-Easyauth
 ====================
 
 Very basic and "need-to-know" authentication package.
@@ -37,4 +37,5 @@ The reset link is only available if a user 'lost' his password. He will be recei
 Goal
 ====
 The goal of codeigniter-easyauth is keeping everything as simple and clean as possible.
+When I am completely satisfied I will turn this into a spark
 
