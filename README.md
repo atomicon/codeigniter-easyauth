@@ -13,8 +13,27 @@ How to use:
 - Copy the Auth.php from controllers to your application/controllers folder
 - Copy the folder 'easyauth' from views to your application/views folder
 
-Thats it. (you can login with: *admin@admin.com* and *password*)
+Thats it. (you can login with: ***admin@admin.com*** and ***password***)
 
 *note*
 It isn't mandatory that you call your database table 'users' you can change that if you like.
 The same for your controller... a simple find & replace on 'Auth' 'auth' will do.
+
+Current functionality
+=====================
+
+(examples below are based on controller name **'auth'**)
+
+- auth/login
+- auth/logout
+- auth/register
+- auth/forgot
+- auth/profile
+- auth/reset/xxx
+
+The reset link is only available if a user 'lost' his password. He will be receive an email with a link (***auth/reset/xxx***) with a unique hash
+
+Goal
+====
+The goal of codeigniter-easyauth is keeping everything as simple and clean as possible.
+
