@@ -13,7 +13,7 @@ How to use:
 - Copy the Auth.php from controllers to your application/controllers folder
 - Copy the folder 'easyauth' from views to your application/views folder
 
-Thats it.
+Thats it. (you can login with: *admin@admin.com* and *password*)
 
 *note*
 It isn't mandatory that you call your database table 'users' you can change that if you like.
