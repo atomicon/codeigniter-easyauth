@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(255) NOT NULL,
   `forgot` varchar(255) DEFAULT NULL,
   `remember` varchar(255) DEFAULT NULL,
-  `updated` datetime DEFAULT NULL,
+  `last_login` datetime DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
@@ -19,5 +19,5 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 -- Create one user
 -- Login with: 'admin@admin.com' and 'password'
-INSERT INTO `users` (`id`, `email`, `password`, `forgot`, `remember`, `updated`, `created`) VALUES
-(1, 'admin@admin.com', '5f4dcc3b5aa765d61d8327deb882cf99', NULL, NULL, NULL, NULL);
+INSERT INTO `users` (`id`, `email`, `password`, `forgot`, `remember`, `last_login`, `created`) VALUES
+(1, 'admin@admin.com', '5f4dcc3b5aa765d61d8327deb882cf99', NULL, NULL, NULL, NOW());

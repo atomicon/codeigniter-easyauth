@@ -73,6 +73,8 @@ class Easyauth
 				{
 					$this->set_user_id($user->id);
 					$this->set_user($user);
+					$this->set_remember_me();
+					$this->set_last_login();
 				}
 			}
 		}
@@ -117,7 +119,6 @@ class Easyauth
 		$data = array(
    			'email' => $email,
    			'password' => md5($password),
-   			'updated'  => strftime("%Y-%m-%d %H:%M:%S", time()),
    			'created'  => strftime("%Y-%m-%d %H:%M:%S", time()),
 		);
 
@@ -169,13 +170,11 @@ class Easyauth
 
 		$this->set_user_id($user->id);
 		$this->set_user($user);
-		if ($remember && $this->config('remember'))
+		$this->set_last_login();
+
+		if ($remember)
 		{
-			$remember_value = md5(uniqid($this->config('session_key')));
-			if ($this->_ci->db->update( $this->config('table'), array('remember' => $remember_value) , array('id' => $user->id)))
-			{
-				set_cookie( $this->config('remember'), $remember_value, $this->config('cookie_expire', 60*60*24*365) );
-			}
+			$this->set_remember_me();
 		}
 
 		$this->add_message( __('Succesfully logged in') , 'success');
@@ -323,7 +322,6 @@ class Easyauth
   		}
   		if (!empty($data))
   		{
-  			$data['updated'] = strftime("%Y-%m-%d %H:%M:%S", time());
   			if (!$this->_ci->db->update($this->config('table'), $data, array('id' => $user->id), 1))
   			{
   				$this->add_message( __('Profile saved') , 'success');
@@ -389,6 +387,53 @@ class Easyauth
 	}
 
   	// getters & setters ====================================================================================
+
+	/**
+     * Easyauth::set_last_login()
+     *
+     * @return bool TRUE on success and FALSE on failure
+     */
+  	function set_last_login()
+  	{
+  		$user = $this->user();
+  		if (!$user)
+  		{
+  			return FALSE;
+  		}
+
+  		$data = array(
+  			'last_login' => strftime("%Y-%m-%d %H:%M:%S", time()),
+		);
+
+		return $this->_ci->db->update($this->config('table'), $data, array('id' => $user->id), 1);
+  	}
+
+  	/**
+     * Easyauth::set_remember_me()
+     *
+     * Updates the database and sets a cookie
+     *
+     * @return bool TRUE on success and FALSE on failure
+     */
+
+  	function set_remember_me()
+  	{
+  		$user = $this->user();
+  		if (!$user)
+  		{
+  			return FALSE;
+  		}
+  		if ($this->config('remember'))
+		{
+			$remember_value = md5(uniqid($this->config('session_key')));
+			if ($this->_ci->db->update( $this->config('table'), array('remember' => $remember_value) , array('id' => $user->id)))
+			{
+				set_cookie( $this->config('remember'), $remember_value, $this->config('cookie_expire', 60*60*24*365) );
+				return TRUE;
+			}
+		}
+		return FALSE;
+  	}
 
 
     /**
