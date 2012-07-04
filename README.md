@@ -7,7 +7,7 @@ This package is very basic and focuses on 1 thing only: authentication
 
 Easyauth is very configurable.
 
-> For a secure solution of handling session you may want to give [codeigniter-native-session][1] a go. It handles session on the server side instead of cookies
+> For a secure solution of handling sessions you may want to give [codeigniter-native-session][1] a go. It handles sessions server-side instead of cookies
 
 How to use:
 
