@@ -12,7 +12,7 @@ How to use:
 - Run the SQL file (it is in the folder 'sql')
 - Copy the easyauth.php from config to your application/config folder
 - Copy the Auth.php from controllers to your application/controllers folder
-- Copy the folder 'easyauth' from views to your application/views folder
+- Copy the folder 'auth' (or 'auth-bootstrap') from views to your application/views folder
 
 Thats it. (you can login with: ***admin@admin.com*** and ***password***)
 
@@ -33,6 +33,14 @@ Current functionality
 - auth/reset/xxx
 
 The reset link is only available if a user 'lost' his password. He will be receive an email with a link (***auth/reset/xxx***) with a unique hash
+
+Views
+=====
+
+There are 2 view-folders available
+
+- ***auth*** *These views are in the most simple form*
+- ***auth-bootstrap*** *These view are optimized for twitter bootstrap*
 
 Goal
 ====

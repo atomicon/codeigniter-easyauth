@@ -1,7 +1,7 @@
 <?php
 	echo $messages;
 
-	echo heading('Profile');
+	echo heading(__('Profile'));
 
 	echo form_open();
 

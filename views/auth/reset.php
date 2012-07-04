@@ -11,6 +11,6 @@
 	echo form_label('Password again:', 'password2') . br();
 	echo form_password('password2', '') . br();
 
-	echo form_submit('action', 'Reset password');
+	echo form_submit('action', __('Reset password'));
 
 	echo form_close();

@@ -16,6 +16,6 @@
 
 	echo anchor('auth/forgot', __('Forgot your password?'));
 
-	echo form_submit('action', 'Login');
+	echo form_submit('action', __('Login'));
 
 	echo form_close();
