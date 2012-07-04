@@ -10,15 +10,15 @@
 
     <div class="control-group">
     <?php
-        echo form_label('New password:', 'password') . br();
-        echo form_password('password', '') . br();
+        echo form_label('New password:', 'password');
+        echo form_password('password', '');
     ?>
     </div>
 
     <div class="control-group">
     <?php
-        echo form_label('Password again:', 'password2') . br();
-        echo form_password('password2', '') . br();
+        echo form_label('Password again:', 'password2');
+        echo form_password('password2', '');
     ?>
     </div>
 

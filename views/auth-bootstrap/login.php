@@ -10,21 +10,21 @@
 
     <div class="control-group">
     <?php
-        echo form_label(__('Email'), 'email') . br();
-        echo form_input('email', $email) . br();
+        echo form_label(__('Email'), 'email');
+        echo form_input('email', $email);
     ?>
     </div>
 
     <div class="control-group">
     <?php
-        echo form_label(__('Password'), 'password') . br();
-        echo form_password('password', $password) . br();
+        echo form_label(__('Password'), 'password');
+        echo form_password('password', $password);
     ?>
     </div>
 
     <div class="control-group">
     <?php
-        echo form_label( form_checkbox('remember', '1', $remember) . __('Remember me'), 'remember', array('class' => 'checkbox')) . br();
+        echo form_label( form_checkbox('remember', '1', $remember) . __('Remember me'), 'remember', array('class' => 'checkbox'));
     ?>
     </div>
 

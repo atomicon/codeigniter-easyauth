@@ -10,8 +10,8 @@
 
     <div class="control-group">
     <?php
-        echo form_label(__('Email'), 'email') . br();
-        echo form_input('email', $email) . br();
+        echo form_label(__('Email'), 'email');
+        echo form_input('email', $email);
     ?>
     </div>
 
