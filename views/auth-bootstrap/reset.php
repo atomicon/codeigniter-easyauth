@@ -17,8 +17,8 @@
 
     <div class="control-group">
     <?php
-        echo form_label('Password again:', 'password2');
-        echo form_password('password2', '');
+        echo form_label('Password again:', 'passconf');
+        echo form_password('passconf', '');
     ?>
     </div>
 

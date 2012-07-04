@@ -11,8 +11,8 @@
 	echo form_label(__('Password'), 'password') . br();
 	echo form_password('password', '') . br();
 
-	echo form_label(__('Password again'), 'password2') . br();
-	echo form_password('password2', '') . br();
+	echo form_label(__('Password again'), 'passconf') . br();
+	echo form_password('passconf', '') . br();
 
 	echo form_submit('action', __('Save'));
 

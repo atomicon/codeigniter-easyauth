@@ -316,19 +316,23 @@ class Easyauth
   		{
   			$data['email'] = $email;
   		}
+
   		if (trim($password) != '')
   		{
   			$data['password'] = md5($password);
   		}
+
   		if (!empty($data))
   		{
   			if (!$this->_ci->db->update($this->config('table'), $data, array('id' => $user->id), 1))
   			{
-  				$this->add_message( __('Profile saved') , 'success');
+  				$this->add_message( __('There was a problem updating your profile') , 'error');
+  				return FALSE;
   			}
   			else
   			{
-  				$this->add_message( __('There was a problem updating your profile') , 'error');
+  				$this->add_message( __('Profile saved') , 'success');
+  				return TRUE;
   			}
 		}
 		return TRUE;
@@ -358,7 +362,7 @@ class Easyauth
 	function html_messages()
 	{
 		$html = '';
-		$html_message = $this->config('html_message', '<div class="alert alert-{type}"><button class="close" data-dismiss="alert">&times;</button>{message}</div>');
+		$html_message = $this->config('html_message', '<div class="alert alert-{type}">{message}</div>');
 		foreach($this->messages() as $message)
 		{
 			$item = $html_message;

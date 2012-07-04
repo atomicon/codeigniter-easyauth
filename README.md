@@ -10,8 +10,9 @@ Easyauth is very configurable.
 How to use:
 
 - Run the SQL file (it is in the folder 'sql')
-- Copy the **config/easyauth.php** from config to **application/config/easyauth.php**
-- Copy the **config/Auth.php** from controllers to **application/controllers/Auth.php**
+- Copy **config/easyauth.php** from config to **application/config/easyauth.php**
+- Copy **libraries/easyauth.php** from config to **application/libraries/easyauth.php**
+- Copy **config/Auth.php** from controllers to **application/controllers/Auth.php**
 - Copy the folder **views/auth-simple** or **views/auth-bootstrap** to **application/views/auth**
 
 Thats it. (you can login with: **admin@admin.com** and **password**)

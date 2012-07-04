@@ -8,8 +8,8 @@
 	echo form_label('New password:', 'password') . br();
 	echo form_password('password', '') . br();
 
-	echo form_label('Password again:', 'password2') . br();
-	echo form_password('password2', '') . br();
+	echo form_label('Password again:', 'passconf') . br();
+	echo form_password('passconf', '') . br();
 
 	echo form_submit('action', __('Reset password'));
 
