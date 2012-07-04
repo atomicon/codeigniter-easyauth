@@ -6,7 +6,7 @@
         <?php echo heading(__('Login')); ?>
     </div>
 
-    <?php echo form_open(null, 'class="form"'); ?>
+    <?php echo form_open(); ?>
 
     <div class="control-group">
     <?php

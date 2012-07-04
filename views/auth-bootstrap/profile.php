@@ -6,6 +6,8 @@
         <?php echo heading(__('Profile')); ?>
     </div>
 
+    <?php echo form_open(); ?>
+
     <div class="control-group">
     <?php
         echo form_label(__('Email'), 'email');
