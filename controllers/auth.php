@@ -64,7 +64,7 @@ class Auth extends CI_Controller
 	{
 		$this->form_validation->set_rules('email', __('Email'), 'required|valid_email|is_unique['.$this->easyauth->config('table', 'users').'.email]');
 		$this->form_validation->set_rules('password', __('Password'), 'required|matches[passconf]');
-		$this->form_validation->set_rules('passconf', __('Password Confirmation'), 'required');
+		$this->form_validation->set_rules('passconf', __('Password confirmation'), 'required');
 
 		$email    = $this->input->post('email');
 		$password = $this->input->post('password');
@@ -122,7 +122,7 @@ class Auth extends CI_Controller
 		}
 
 		$this->form_validation->set_rules('password', __('Password'), 'required|matches[passconf]');
-		$this->form_validation->set_rules('passconf', __('Password Confirmation'), 'required');
+		$this->form_validation->set_rules('passconf', __('Password confirmation'), 'required');
 
 		$password = $this->input->post('password');
 		$passconf = $this->input->post('passconf');
@@ -153,7 +153,7 @@ class Auth extends CI_Controller
 
 		$this->form_validation->set_rules('email', __('Email'), 'required|valid_email');
 		$this->form_validation->set_rules('password', __('New password'), 'matches[passconf]');
-		$this->form_validation->set_rules('passconf', __('Password Confirmation'), '');
+		$this->form_validation->set_rules('passconf', __('Password confirmation'), '');
 
 		$user = $this->easyauth->user();
 
