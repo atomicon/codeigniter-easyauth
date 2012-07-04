@@ -10,14 +10,14 @@
 
     <div class="control-group">
     <?php
-        echo form_label('New password:', 'password');
+        echo form_label(__('New password'), 'password');
         echo form_password('password', '');
     ?>
     </div>
 
     <div class="control-group">
     <?php
-        echo form_label('Password again:', 'passconf');
+        echo form_label(__('Password confirmation'), 'passconf');
         echo form_password('passconf', '');
     ?>
     </div>

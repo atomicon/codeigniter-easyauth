@@ -5,10 +5,10 @@
 
 	echo form_open();
 
-	echo form_label('New password:', 'password') . br();
+	echo form_label(__('New password'), 'password') . br();
 	echo form_password('password', '') . br();
 
-	echo form_label('Password again:', 'passconf') . br();
+	echo form_label(__('Password confirmation'), 'passconf') . br();
 	echo form_password('passconf', '') . br();
 
 	echo form_submit('action', __('Reset password'));
