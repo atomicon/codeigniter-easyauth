@@ -7,6 +7,8 @@ This package is very basic and focuses on 1 thing only: authentication
 
 Easyauth is very configurable.
 
+> For a secure solution of handling session you may want to give [codeigniter-native-session][1] a go. It handles session on the server side instead of cookies
+
 How to use:
 
 - Run the SQL file (it is in the folder 'sql')
@@ -57,3 +59,4 @@ The goal of codeigniter-easyauth is keeping everything as simple and clean as po
 
 When I am completely satisfied I will turn this into a spark
 
+[1]: https://github.com/atomicon/codeigniter-native-session
