@@ -39,8 +39,12 @@ Views
 
 There are 2 view-folders available
 
-- ***auth*** *These views are in the most simple form*
-- ***auth-bootstrap*** *These view are optimized for twitter bootstrap*
+- **auth** *These views are in the most simple form*
+- **auth-bootstrap** *These views are optimized for twitter bootstrap*
+
+When installing easyauth make a choice: 
+- Copy auth from views to application/views/auth
+- Copy auth-bootstrap from views to application/views/auth (make sure to rename it to 'auth')
 
 Goal
 ====
