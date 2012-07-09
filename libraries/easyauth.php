@@ -100,7 +100,7 @@ class Easyauth
  	 *
  	 * @param string $email
  	 * @param string $password
- 	 * @return boolean TRUE on success and FALSE on failure
+ 	 * @return integer Last insert id on success and FALSE on failure
  	 */
  	function register($email, $password)
  	{
@@ -128,13 +128,15 @@ class Easyauth
 			return FALSE;
 		}
 
-		$data['id'] = $this->_ci->db->insert_id();
+		$user_id = $this->_ci->db->insert_id();
+
+		$data['id'] = $user_id;
 		$this->set_user_id($data['id']);
 		$this->set_user( (object)$data );
 
 		$this->add_message( __('Succesfully created your account') , 'success');
 
-		return TRUE;
+		return $user_id;
  	}
 
   	/**
