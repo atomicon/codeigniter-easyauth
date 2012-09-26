@@ -7,4 +7,4 @@ $autoload['config'] = array('easyauth');
 $autoload['helper'] = array('cookie');
 
 # Load the easyauth spark
-$autoload['libraries'] = array('easyauth', 'session', 'database');
+$autoload['libraries'] = array('easyauth');
