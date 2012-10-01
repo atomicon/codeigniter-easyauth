@@ -118,7 +118,7 @@ class Easyauth
 
 		$data = array(
    			'email' => $email,
-   			'password' => md5($password),
+   			'password' => $this->encode($password),
    			'created'  => strftime("%Y-%m-%d %H:%M:%S", time()),
 		);
 
@@ -160,7 +160,7 @@ class Easyauth
   		//first try email
   		$where = array(
   			'email'    => $email,
-  			'password' => md5($password),
+  			'password' => $this->encode($password),
 		);
 		$query = $this->_ci->db->get_where( $this->config('table'), $where, 1);
 		$user  = $query->row_object();
@@ -225,7 +225,7 @@ class Easyauth
 		$user  = $query->row_object();
 		if ($user)
 		{
-			$forgot_value = md5(uniqid($this->config('session_key')));
+			$forgot_value = $this->encode(uniqid($this->config('session_key')));
 			if ($this->_ci->db->update( $this->config('table'), array('forgot' => $forgot_value) , array('id' => $user->id)))
 			{
 				$this->_ci->load->library('email');
@@ -285,7 +285,7 @@ class Easyauth
 		$user  = $query->row_object();
 		if ($user)
 		{
-   			if ($this->_ci->db->update( $this->config('table'), array('password' => md5($password), 'forgot' => NULL), array('id' => $user->id) ))
+   			if ($this->_ci->db->update( $this->config('table'), array('password' => $this->encode($password), 'forgot' => NULL), array('id' => $user->id) ))
    			{
    				$this->add_message( __('Password is reset') , 'success');
    				return TRUE;
@@ -321,7 +321,7 @@ class Easyauth
 
   		if (trim($password) != '')
   		{
-  			$data['password'] = md5($password);
+  			$data['password'] = $this->encode($password);
   		}
 
   		if (!empty($data))
@@ -431,7 +431,7 @@ class Easyauth
   		}
   		if ($this->config('remember'))
 		{
-			$remember_value = md5(uniqid($this->config('session_key')));
+			$remember_value = $this->encode(uniqid($this->config('session_key')));
 			if ($this->_ci->db->update( $this->config('table'), array('remember' => $remember_value) , array('id' => $user->id)))
 			{
 				set_cookie( $this->config('remember'), $remember_value, $this->config('cookie_expire', 60*60*24*365) );
@@ -516,4 +516,24 @@ class Easyauth
 		$this->_user = $object;
 	}
 
+    /**
+	 * Easyauth::set_user()
+	 *
+	 * encodes a password conform the config settings
+	 *
+	 * @param object $object User object
+	 * @return
+	 */
+    function encode($password)
+    {
+        switch($this->config('encoding', 'md5'))
+        {
+            case 'sha1':
+                        return sha1($password);
+                        break;
+            case 'md5':
+                        return md5($password);
+                        break;
+        }
+    }
 }

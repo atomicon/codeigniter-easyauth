@@ -7,6 +7,8 @@ $config['easyauth'] = array(
 	'expire'      => 60*60*24*365,        //cookie expiration (year)
 
 	'table'       => 'users',             //database table
+    
+    'encoding'    => 'md5',               //encoding (md5/sha1)
 
 	'email_from'  => 'me@domain.com',     //e-mail from (when sending password reset mails)
 
