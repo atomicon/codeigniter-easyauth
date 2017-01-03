@@ -31,6 +31,8 @@ $route['logout'] = 'auth/logout';
 $route['register'] = 'auth/register';
 $route['forgot-password'] = 'auth/forgot_password';
 $route['reset-password/(:any)'] = 'auth/reset_password/$1';
+$route['impersonate/(:any)'] = 'auth/impersonate/$1';
+$route['unimpersonate'] = 'auth/unimpersonate';
 ```
 
 ***note***

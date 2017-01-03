@@ -1,6 +1,6 @@
 <?php
 
-define('EASYAUTH_DEBUG', true);
+define('EASYAUTH_DEBUG', ENVIRONMENT !== 'production');
 
 if (!function_exists('__'))
 {
@@ -55,6 +55,15 @@ class Easyauth
 		$this->install();
 	}
 
+	/**
+	 * Easyauth::install()
+	 *
+	 * This will install the 'table' as defined by the config
+	 * if the 'table' doesn't already exists.
+	 * It will also install one user -> `admin@admin.com` with password: `password`
+	 *
+	 * @return
+	 */
 	function install()
 	{
 		$table = $this->config('table');
@@ -63,10 +72,11 @@ class Easyauth
 			return;
 		}
 		$this->_ci->db->simple_query("
-			CREATE TABLE IF NOT EXISTS `users` (
+			CREATE TABLE IF NOT EXISTS `$table` (
 			  `id` bigint(20) NOT NULL AUTO_INCREMENT,
 			  `email` varchar(255) NOT NULL,
 			  `password` varchar(255) NOT NULL,
+			  `role` varchar(255) DEFAULT 'user',
 			  `forgot` varchar(255) DEFAULT NULL,
 			  `remember` varchar(255) DEFAULT NULL,
 			  `last_login` datetime DEFAULT NULL,
@@ -77,8 +87,8 @@ class Easyauth
 
 		// Login with: 'admin@admin.com' and 'password'
 		$this->_ci->db->simple_query("
-			INSERT INTO `users` (`id`, `email`, `password`, `forgot`, `remember`, `last_login`, `created`) VALUES
-			(1, 'admin@admin.com', '5f4dcc3b5aa765d61d8327deb882cf99', NULL, NULL, NULL, NOW());
+			INSERT INTO `$table` (`id`, `email`, `password`, `role`, `forgot`, `remember`, `last_login`, `created`) VALUES
+			(1, 'admin@admin.com', '5f4dcc3b5aa765d61d8327deb882cf99', 'admin', NULL, NULL, NULL, NOW());
 		");
 	}
 
@@ -109,7 +119,18 @@ class Easyauth
 				}
 			}
 		}
-		return $this->_ci->session->userdata($this->config('session_key'));
+
+		if ($this->impersonating())
+		{
+			$query = $this->_ci->db->get_where($this->config('table'), array('id' => $this->impersonating()), 1);
+			$user = $query->row_object();
+			if ($user)
+			{
+				$this->set_user($user);
+				$user_id = $user->id;
+			}
+		}
+		return $user_id;
 	}
 
 	/**
@@ -147,10 +168,12 @@ class Easyauth
 			return false;
 		}
 
+		$time = strftime("%Y-%m-%d %H:%M:%S", time());
 		$data = array(
 			'email' => $email,
 			'password' => $this->encode($password),
-			'created' => strftime("%Y-%m-%d %H:%M:%S", time()),
+			'last_login' => $time,
+			'created' => $time,
 			);
 
 		if (!$this->_ci->db->insert($this->config('table'), $data))
@@ -369,6 +392,56 @@ class Easyauth
 		return true;
 	}
 
+
+	// Impersonation ========================================================================================
+
+	/**
+	 * Easyauth::impersonate()
+	 *
+	 * Impersonate an other user
+	 *
+	 * @return boolean
+	 */
+	function impersonate($id)
+	{
+		$user = $this->user();
+		if (isset($user->role) && $user->role == 'admin')
+		{
+			$query = $this->_ci->db->get_where($this->config('table'), array('id' => $id), 1);
+			$impersonate_user = $query->row_object();
+			if (isset($impersonate_user->id))
+			{
+				$this->_ci->session->set_userdata($this->config('session_key').'_impersonate', $impersonate_user->id);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Easyauth::unimpersonate()
+	 *
+	 * Unimpersonate an other user and return to your own account
+	 *
+	 * @return boolean
+	 */
+	function unimpersonate()
+	{
+		return $this->_ci->session->unset_userdata($this->config('session_key').'_impersonate');
+	}
+
+	/**
+	 * Easyauth::impersonating()
+	 *
+	 * Returns the user_id of the user you are impersonating
+	 *
+	 * @return id (int)
+	 */
+	function impersonating()
+	{
+		return $this->_ci->session->userdata($this->config('session_key').'_impersonate');
+	}
+
 	// messages ========================================================================================
 
 	/**
@@ -544,8 +617,10 @@ class Easyauth
 		$this->_user = $object;
 	}
 
+	// Encoding ====================================================================================
+
 	/**
-	 * Easyauth::set_user()
+	 * Easyauth::encode()
 	 *
 	 * encodes a password conform the config settings
 	 *

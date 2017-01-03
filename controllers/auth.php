@@ -181,4 +181,16 @@ class Auth extends MY_Controller
 
 		$this->load->view('auth/profile', $data);
 	}
+
+	function impersonate($id)
+	{
+		$this->easyauth->impersonate($id);
+		redirect('/');
+	}
+
+	function unimpersonate()
+	{
+		$this->easyauth->unimpersonate($id);
+		redirect('/');
+	}
 }
