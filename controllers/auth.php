@@ -1,6 +1,6 @@
 <?php
 
-class Auth extends CI_Controller
+class Auth extends MY_Controller
 {
 	function __construct()
 	{
@@ -8,9 +8,12 @@ class Auth extends CI_Controller
 		//$this->load->spark('easyauth/1.0.0');
 		$this->load->library('easyauth');
 		$this->load->library('form_validation');
-		$this->load->helper( array('url', 'form', 'html') );
+		$this->load->helper(array(
+			'url',
+			'form',
+			'html'));
 
-		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
+		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 	}
 
 	function index()
@@ -30,7 +33,7 @@ class Auth extends CI_Controller
 		$this->form_validation->set_rules('email', __('Email'), 'required|valid_email');
 		$this->form_validation->set_rules('password', __('Password'), 'required');
 
-		$email    = $this->input->post('email');
+		$email = $this->input->post('email');
 		$password = $this->input->post('password');
 		$remember = $this->input->post('remember');
 
@@ -45,11 +48,11 @@ class Auth extends CI_Controller
 		$messages = validation_errors() . $this->easyauth->html_messages();
 
 		$data = array(
-			'email'    => $email,
+			'email' => $email,
 			'password' => $password,
 			'remember' => $remember,
 			'messages' => $messages,
-		);
+			);
 
 		$this->load->view('auth/login', $data);
 	}
@@ -62,11 +65,11 @@ class Auth extends CI_Controller
 
 	function register()
 	{
-		$this->form_validation->set_rules('email', __('Email'), 'required|valid_email|is_unique['.$this->easyauth->config('table', 'users').'.email]');
+		$this->form_validation->set_rules('email', __('Email'), 'required|valid_email|is_unique[' . $this->easyauth->config('table', 'users') . '.email]');
 		$this->form_validation->set_rules('password', __('Password'), 'required|matches[passconf]');
 		$this->form_validation->set_rules('passconf', __('Password confirmation'), 'required');
 
-		$email    = $this->input->post('email');
+		$email = $this->input->post('email');
 		$password = $this->input->post('password');
 		$passconf = $this->input->post('passconf');
 
@@ -81,16 +84,16 @@ class Auth extends CI_Controller
 		$messages = validation_errors() . $this->easyauth->html_messages();
 
 		$data = array(
-			'email'    => $email,
+			'email' => $email,
 			'password' => $password,
 			'passconf' => $passconf,
 			'messages' => $messages,
-		);
+			);
 
 		$this->load->view('auth/register', $data);
 	}
 
-	function forgot()
+	function forgot_password()
 	{
 		$this->form_validation->set_rules('email', __('Email'), 'required|valid_email');
 
@@ -98,7 +101,7 @@ class Auth extends CI_Controller
 
 		if ($this->form_validation->run())
 		{
-			if ($this->easyauth->forgot($email))
+			if ($this->easyauth->forgot_password($email))
 			{
 				redirect('auth/login');
 			}
@@ -107,18 +110,18 @@ class Auth extends CI_Controller
 		$messages = validation_errors() . $this->easyauth->html_messages();
 
 		$data = array(
-			'email'    => $email,
+			'email' => $email,
 			'messages' => $messages,
-		);
+			);
 
-		$this->load->view('auth/forgot', $data);
+		$this->load->view('auth/forgot_password', $data);
 	}
 
-	function reset($forgot = null)
+	function reset_password($forgot = null)
 	{
 		if (!$forgot)
 		{
-   			redirect('/');
+			redirect('/');
 		}
 
 		$this->form_validation->set_rules('password', __('Password'), 'required|matches[passconf]');
@@ -129,7 +132,7 @@ class Auth extends CI_Controller
 
 		if ($this->form_validation->run())
 		{
-			if ($this->easyauth->reset($forgot, $password))
+			if ($this->easyauth->reset_password($forgot, $password))
 			{
 				redirect('auth/login');
 			}
@@ -137,10 +140,8 @@ class Auth extends CI_Controller
 
 		$messages = validation_errors() . $this->easyauth->html_messages();
 
-		$data = array(
-			'messages' => $messages,
-		);
-		$this->load->view('auth/reset', $data);
+		$data = array('messages' => $messages, );
+		$this->load->view('auth/reset_password', $data);
 	}
 
 	function profile()
@@ -157,7 +158,7 @@ class Auth extends CI_Controller
 
 		$user = $this->easyauth->user();
 
-		$email    = $this->input->post('email');
+		$email = $this->input->post('email');
 		$password = trim($this->input->post('password'));
 		$passconf = trim($this->input->post('passconf'));
 
@@ -165,18 +166,18 @@ class Auth extends CI_Controller
 		{
 			if ($this->easyauth->profile($email, $password))
 			{
- 				//profile was succesfully saved
- 				//maybe redirect here? or link another table?
+				//profile was succesfully saved
+				//maybe redirect here? or link another table?
 			}
 		}
 
 		$messages = validation_errors() . $this->easyauth->html_messages();
 
 		$data = array(
-   			'email'    => $user->email,
-   			'password' => $user->password,
-   			'messages' => $messages,
-		);
+			'email' => $user->email,
+			'password' => $user->password,
+			'messages' => $messages,
+			);
 
 		$this->load->view('auth/profile', $data);
 	}

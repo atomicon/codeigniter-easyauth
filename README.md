@@ -19,6 +19,20 @@ How to use:
 
 Thats it. (you can login with: **admin@admin.com** and **password**)
 
+Installation
+============
+1) Copy "codeigniter-easyauth" folder in third party
+2) Copy "codeigniter-easyauth/controllers/Auth.php" to your controllers directory
+3) Paste the following section to your routes.php config file:
+
+```
+$route['login'] = 'auth/login';
+$route['logout'] = 'auth/logout';
+$route['register'] = 'auth/register';
+$route['forgot-password'] = 'auth/forgot_password';
+$route['reset-password/(:any)'] = 'auth/reset_password/$1';
+```
+
 ***note***
 
 It isn't mandatory that you call your database table 'users' you can change that if you like.
@@ -36,21 +50,7 @@ Current functionality
 - auth/profile
 - auth/reset/xxx
 
-The reset link is only available if a user 'lost' his password. He will be receive an email with a link (***auth/reset/xxx***) with a unique hash
-
-Views
-=====
-
-There are 2 view-folders available
-
-- **auth-simple** *These views are in the most simplest form*
-- **auth-bootstrap** *These views are optimized for twitter bootstrap*
-
-When installing easyauth make a choice:
-- Copy **views/auth-simple** to **application/views/auth**
-- Copy **views/auth-bootstrap** to **application/views/auth**
-
-**(make sure to rename it to 'auth')**
+The reset link is only available if a user 'lost' his password. He will be receive an email with a link (***reset-password/xxx***) with a unique hash
 
 Goal
 ====
