@@ -21,9 +21,9 @@ Thats it. (you can login with: **admin@admin.com** and **password**)
 
 Installation
 ============
-1) Copy "codeigniter-easyauth" folder in third party
-2) Copy "codeigniter-easyauth/controllers/Auth.php" to your controllers directory
-3) Paste the following section to your routes.php config file:
+- Copy "codeigniter-easyauth" folder in third party
+- Copy "codeigniter-easyauth/controllers/Auth.php" to your controllers directory
+- Paste the following section to your routes.php config file:
 
 ```
 $route['login'] = 'auth/login';
