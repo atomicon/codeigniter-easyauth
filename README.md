@@ -45,14 +45,16 @@ Current functionality
 
 (examples below are based on controller name **auth** e.g. *http://localhost/cidev/auth/login* etc.)
 
-- auth/login
-- auth/logout
-- auth/register
-- auth/forgot
-- auth/profile
-- auth/reset/xxx
+- /login
+- /logout
+- /register
+- /forgot-password
+- /profile
+- /reset-password/[CODE]
+- /impersonate/[USER-ID]
+- /unimpersonate
 
-The reset link is only available if a user 'lost' his password. He will be receive an email with a link (***reset-password/xxx***) with a unique hash
+The reset link is only available if a user 'lost' his password. He will be receive an email with a link (***reset-password/[CODE]***) with a unique hash
 
 Goal
 ====
