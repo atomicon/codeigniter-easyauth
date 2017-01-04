@@ -9,6 +9,7 @@
 			</div>
 			<div class="panel-body">
 				<?php echo form_open(); ?>
+				<?php echo form_hidden('redirect', $this->redirect) ?>
 					<div class="form-group">
 						<?php echo form_label(__('New password'), 'password') ?>
 						<?php echo form_password('password', set_value('password'), 'class="form-control"') ?>

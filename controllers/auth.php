@@ -2,10 +2,11 @@
 
 class Auth extends MY_Controller
 {
+	public $redirect = '/';
+
 	function __construct()
 	{
 		parent::__construct();
-		//$this->load->spark('easyauth/1.0.0');
 		$this->load->library('easyauth');
 		$this->load->library('form_validation');
 		$this->load->helper(array(
@@ -14,6 +15,11 @@ class Auth extends MY_Controller
 			'html'));
 
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
+		$this->redirect = $this->input->get_post('redirect');
+		if (empty($this->redirect))
+		{
+			$this->redirect = '/';
+		}
 	}
 
 	function index()
@@ -41,7 +47,7 @@ class Auth extends MY_Controller
 		{
 			if ($this->easyauth->login($email, $password, $remember))
 			{
-				redirect('/');
+				redirect($this->redirect);
 			}
 		}
 
@@ -52,7 +58,8 @@ class Auth extends MY_Controller
 			'password' => $password,
 			'remember' => $remember,
 			'messages' => $messages,
-			);
+			'redirect' => $this->redirect,
+		);
 
 		$this->load->view('auth/login', $data);
 	}
@@ -60,7 +67,7 @@ class Auth extends MY_Controller
 	function logout()
 	{
 		$this->easyauth->logout();
-		redirect('/');
+		redirect($this->redirect);
 	}
 
 	function register()
@@ -77,7 +84,7 @@ class Auth extends MY_Controller
 		{
 			if ($this->easyauth->register($email, $password))
 			{
-				redirect('/');
+				redirect($this->redirect);
 			}
 		}
 
@@ -88,6 +95,7 @@ class Auth extends MY_Controller
 			'password' => $password,
 			'passconf' => $passconf,
 			'messages' => $messages,
+			'redirect' => $this->redirect,
 			);
 
 		$this->load->view('auth/register', $data);
@@ -103,7 +111,7 @@ class Auth extends MY_Controller
 		{
 			if ($this->easyauth->forgot_password($email))
 			{
-				redirect('auth/login');
+				redirect('login');
 			}
 		}
 
@@ -112,6 +120,7 @@ class Auth extends MY_Controller
 		$data = array(
 			'email' => $email,
 			'messages' => $messages,
+			'redirect' => $this->redirect,
 			);
 
 		$this->load->view('auth/forgot_password', $data);
@@ -121,7 +130,7 @@ class Auth extends MY_Controller
 	{
 		if (!$forgot)
 		{
-			redirect('/');
+			redirect($this->redirect);
 		}
 
 		$this->form_validation->set_rules('password', __('Password'), 'required|matches[passconf]');
@@ -134,13 +143,16 @@ class Auth extends MY_Controller
 		{
 			if ($this->easyauth->reset_password($forgot, $password))
 			{
-				redirect('auth/login');
+				redirect('login');
 			}
 		}
 
 		$messages = validation_errors() . $this->easyauth->html_messages();
 
-		$data = array('messages' => $messages, );
+		$data = array(
+			'messages' => $messages,
+			'redirect' => $this->redirect,
+		);
 		$this->load->view('auth/reset_password', $data);
 	}
 
@@ -168,6 +180,7 @@ class Auth extends MY_Controller
 			{
 				//profile was succesfully saved
 				//maybe redirect here? or link another table?
+				redirect($this->redirect);
 			}
 		}
 
@@ -177,6 +190,7 @@ class Auth extends MY_Controller
 			'email' => $user->email,
 			'password' => $user->password,
 			'messages' => $messages,
+			'redirect' => $this->redirect,
 			);
 
 		$this->load->view('auth/profile', $data);
@@ -185,12 +199,12 @@ class Auth extends MY_Controller
 	function impersonate($id)
 	{
 		$this->easyauth->impersonate($id);
-		redirect('/');
+		redirect($this->redirect);
 	}
 
 	function unimpersonate()
 	{
 		$this->easyauth->unimpersonate($id);
-		redirect('/');
+		redirect($this->redirect);
 	}
 }

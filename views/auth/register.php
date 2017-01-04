@@ -9,6 +9,7 @@
 			</div>
 			<div class="panel-body">
 				<?php echo form_open(); ?>
+				<?php echo form_hidden('redirect', $this->redirect) ?>
 					<div class="form-group">
 						<?php echo form_label(__('Email'), 'email') ?>
 						<?php echo form_input('email', set_value('email'), 'class="form-control"') ?>
