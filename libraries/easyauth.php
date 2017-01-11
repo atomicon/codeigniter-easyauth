@@ -33,9 +33,16 @@ if (!function_exists('__'))
  */
 class Easyauth
 {
+	// The codeigniter object
 	protected $_ci = null;
+
+	// The user object
 	protected $_user = null;
+
+	// The config object
 	protected $_config = null;
+
+	// Array of messages
 	protected $_messages = array();
 
 	/**
@@ -52,13 +59,17 @@ class Easyauth
 		$this->_ci->load->helper('cookie');
 		$this->_ci->load->config('easyauth');
 		$this->_config = config_item('easyauth');
-		$this->install();
+
+		if ($this->config('install'))
+		{
+			$this->install();
+		}
 	}
 
 	/**
 	 * Easyauth::install()
 	 *
-	 * This will install the 'table' as defined by the config
+	 * This will install the 'table' as defined by the config (if install in the config is true)
 	 * if the 'table' doesn't already exists.
 	 * It will also install one user -> `admin@admin.com` with password: `password`
 	 *
@@ -120,9 +131,9 @@ class Easyauth
 			}
 		}
 
-		if ($this->impersonating())
+		if ($this->is_impersonating())
 		{
-			$query = $this->_ci->db->get_where($this->config('table'), array('id' => $this->impersonating()), 1);
+			$query = $this->_ci->db->get_where($this->config('table'), array('id' => $this->is_impersonating()), 1);
 			$user = $query->row_object();
 			if ($user)
 			{
@@ -411,7 +422,7 @@ class Easyauth
 			$impersonate_user = $query->row_object();
 			if (isset($impersonate_user->id))
 			{
-				$this->_ci->session->set_userdata($this->config('session_key').'_impersonate', $impersonate_user->id);
+				$this->_ci->session->set_userdata($this->config('session_key') . '_impersonate', $impersonate_user->id);
 				return true;
 			}
 		}
@@ -427,19 +438,19 @@ class Easyauth
 	 */
 	function unimpersonate()
 	{
-		return $this->_ci->session->unset_userdata($this->config('session_key').'_impersonate');
+		return $this->_ci->session->unset_userdata($this->config('session_key') . '_impersonate');
 	}
 
 	/**
-	 * Easyauth::impersonating()
+	 * Easyauth::is_impersonating()
 	 *
 	 * Returns the user_id of the user you are impersonating
 	 *
 	 * @return id (int)
 	 */
-	function impersonating()
+	function is_impersonating()
 	{
-		return $this->_ci->session->userdata($this->config('session_key').'_impersonate');
+		return $this->_ci->session->userdata($this->config('session_key') . '_impersonate');
 	}
 
 	// messages ========================================================================================
@@ -610,7 +621,7 @@ class Easyauth
 	 * Sets the user object
 	 *
 	 * @param object $object User object
-	 * @return
+	 * @return void
 	 */
 	function set_user($object)
 	{
@@ -622,10 +633,10 @@ class Easyauth
 	/**
 	 * Easyauth::encode()
 	 *
-	 * encodes a password conform the config settings
+	 * Encodes a password conform the config settings
 	 *
 	 * @param object $object User object
-	 * @return
+	 * @return The encoded string
 	 */
 	function encode($password)
 	{
@@ -638,5 +649,6 @@ class Easyauth
 				return md5($password);
 				break;
 		}
+		return $password;
 	}
 }

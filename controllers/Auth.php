@@ -12,7 +12,8 @@ class Auth extends MY_Controller
 		$this->load->helper(array(
 			'url',
 			'form',
-			'html'));
+			'html'
+        ));
 
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 		$this->redirect = $this->input->get_post('redirect');
@@ -96,7 +97,7 @@ class Auth extends MY_Controller
 			'passconf' => $passconf,
 			'messages' => $messages,
 			'redirect' => $this->redirect,
-			);
+		);
 
 		$this->load->view('auth/register', $data);
 	}
@@ -121,7 +122,7 @@ class Auth extends MY_Controller
 			'email' => $email,
 			'messages' => $messages,
 			'redirect' => $this->redirect,
-			);
+		);
 
 		$this->load->view('auth/forgot_password', $data);
 	}
@@ -153,6 +154,7 @@ class Auth extends MY_Controller
 			'messages' => $messages,
 			'redirect' => $this->redirect,
 		);
+
 		$this->load->view('auth/reset_password', $data);
 	}
 
@@ -191,7 +193,7 @@ class Auth extends MY_Controller
 			'password' => $user->password,
 			'messages' => $messages,
 			'redirect' => $this->redirect,
-			);
+		);
 
 		$this->load->view('auth/profile', $data);
 	}

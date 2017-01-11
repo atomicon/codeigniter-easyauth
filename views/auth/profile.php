@@ -7,7 +7,7 @@
     </div>
 
     <?php echo form_open(); ?>
-	<?php echo form_hidden('redirect', $this->redirect) ?>
+	<?php echo form_hidden('redirect', $redirect) ?>
 
     <div class="control-group">
     <?php
