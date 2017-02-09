@@ -9,11 +9,7 @@ class Auth extends MY_Controller
 		parent::__construct();
 		$this->load->library('easyauth');
 		$this->load->library('form_validation');
-		$this->load->helper(array(
-			'url',
-			'form',
-			'html'
-        	));
+		$this->load->helper(array('url', 'form', 'html'));
 
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 		$this->redirect = $this->input->get_post('redirect');
@@ -156,47 +152,7 @@ class Auth extends MY_Controller
 		);
 
 		$this->load->view('auth/reset_password', $data);
-	}
-
-	function profile()
-	{
-		if (!$this->easyauth->logged_in())
-		{
-			$this->login();
-			return;
-		}
-
-		$this->form_validation->set_rules('email', __('Email'), 'required|valid_email');
-		$this->form_validation->set_rules('password', __('New password'), 'matches[passconf]');
-		$this->form_validation->set_rules('passconf', __('Password confirmation'), '');
-
-		$user = $this->easyauth->user();
-
-		$email = $this->input->post('email');
-		$password = trim($this->input->post('password'));
-		$passconf = trim($this->input->post('passconf'));
-
-		if ($this->form_validation->run())
-		{
-			if ($this->easyauth->profile($email, $password))
-			{
-				//profile was succesfully saved
-				//maybe redirect here? or link another table?
-				redirect($this->redirect);
-			}
-		}
-
-		$messages = validation_errors() . $this->easyauth->html_messages();
-
-		$data = array(
-			'email' => $user->email,
-			'password' => $user->password,
-			'messages' => $messages,
-			'redirect' => $this->redirect,
-		);
-
-		$this->load->view('auth/profile', $data);
-	}
+	}	
 
 	function impersonate($id)
 	{
