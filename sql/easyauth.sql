@@ -20,5 +20,5 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 -- Create one user
 -- Login with: 'admin@admin.com' and 'password'
-INSERT INTO `users` (`id`, `email`, `password`, `forgot`, `remember`, `last_login`, `created`) VALUES
+INSERT INTO `users` (`id`, `email`, `password`, `role`, `forgot`, `remember`, `last_login`, `created`) VALUES
 (1, 'admin@admin.com', '5f4dcc3b5aa765d61d8327deb882cf99', 'admin', NULL, NULL, NULL, NOW());
