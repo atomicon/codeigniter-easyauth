@@ -13,7 +13,7 @@ class Auth extends MY_Controller
 			'url',
 			'form',
 			'html'
-        ));
+        	));
 
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 		$this->redirect = $this->input->get_post('redirect');
