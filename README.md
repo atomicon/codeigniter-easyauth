@@ -49,7 +49,6 @@ Current functionality
 - /logout
 - /register
 - /forgot-password
-- /profile
 - /reset-password/[CODE]
 - /impersonate/[USER-ID]
 - /unimpersonate
