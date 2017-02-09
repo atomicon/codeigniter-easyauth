@@ -19,7 +19,7 @@ if (!function_exists('__'))
 		{
 			$translated = lang($string);
 		}
-		return $translated === false ? $string : $translated;
+		return empty($translated) ? $string : $translated;
 	}
 }
 
