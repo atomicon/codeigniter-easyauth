@@ -12,10 +12,10 @@ Easyauth is very configurable.
 How to use:
 
 - Run the SQL file (it is in the folder 'sql')
-- Copy **config/easyauth.php** from config to **application/config/easyauth.php**
-- Copy **libraries/easyauth.php** from config to **application/libraries/easyauth.php**
-- Copy **config/Auth.php** from controllers to **application/controllers/Auth.php**
-- Copy the folder **views/auth-simple** or **views/auth-bootstrap** to **application/views/auth**
+- Copy **config/easyauth.php** to **application/config/easyauth.php**
+- Copy **libraries/easyauth.php** to **application/libraries/easyauth.php**
+- Copy **controllers/Auth.php** to **application/controllers/Auth.php**
+- Copy **views/auth** to **application/views/auth**
 
 Thats it. (you can login with: **admin@admin.com** and **password**)
 
@@ -23,6 +23,7 @@ Installation
 ============
 - Copy "codeigniter-easyauth" folder in third party
 - Copy "codeigniter-easyauth/controllers/Auth.php" to your controllers directory
+- $this->load->add_package_path(APPPATH.'third_party/codeigniter-easyauth');
 - Paste the following section to your routes.php config file:
 
 ```
@@ -38,7 +39,6 @@ $route['unimpersonate'] = 'auth/unimpersonate';
 ***note***
 
 It isn't mandatory that you call your database table 'users' you can change that if you like.
-The same for your controller... a simple find and replace on 'Auth' will do.
 
 Current functionality
 =====================
@@ -59,7 +59,3 @@ Goal
 ====
 
 The goal of codeigniter-easyauth is keeping everything as simple and clean as possible.
-
-When I am completely satisfied I will turn this into a spark
-
-[1]: https://github.com/atomicon/codeigniter-native-session
