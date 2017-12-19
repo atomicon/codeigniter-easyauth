@@ -23,7 +23,8 @@ class Auth extends MY_Controller
 	{
 		if ($this->easyauth->logged_in())
 		{
-			$this->profile();
+			// redirect to a profile page
+			redirect('/');
 		}
 		else
 		{
