@@ -9,8 +9,6 @@ $config['easyauth'] = array(
 
 	'encoding'             => 'md5', //encoding (md5/sha1)
 
-	'install'              => true, //auto installs the user table
-
 	'email_from'           => 'me@domain.com', //e-mail from (when sending password reset mails)
 
 	'email_forgot_subject' => 'Please reset your password',
