@@ -59,48 +59,6 @@ class Easyauth
 		$this->_ci->load->helper('cookie');
 		$this->_ci->load->config('easyauth');
 		$this->_config = config_item('easyauth');
-
-		if ($this->config('install'))
-		{
-			$this->install();
-		}
-	}
-
-	/**
-	 * Easyauth::install()
-	 *
-	 * This will install the 'table' as defined by the config (if install in the config is true)
-	 * if the 'table' doesn't already exists.
-	 * It will also install one user -> `admin@admin.com` with password: `password`
-	 *
-	 * @return
-	 */
-	function install()
-	{
-		$table = $this->config('table');
-		if ($this->_ci->db->table_exists($table))
-		{
-			return;
-		}
-		$this->_ci->db->simple_query("
-			CREATE TABLE IF NOT EXISTS `$table` (
-			  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-			  `email` varchar(255) NOT NULL,
-			  `password` varchar(255) NOT NULL,
-			  `role` varchar(255) DEFAULT 'user',
-			  `forgot` varchar(255) DEFAULT NULL,
-			  `remember` varchar(255) DEFAULT NULL,
-			  `last_login` datetime DEFAULT NULL,
-			  `created` datetime DEFAULT NULL,
-			  PRIMARY KEY (`id`)
-			) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-		");
-
-		// Login with: 'admin@admin.com' and 'password'
-		$this->_ci->db->simple_query("
-			INSERT INTO `$table` (`id`, `email`, `password`, `role`, `forgot`, `remember`, `last_login`, `created`) VALUES
-			(1, 'admin@admin.com', '5f4dcc3b5aa765d61d8327deb882cf99', 'admin', NULL, NULL, NULL, NOW());
-		");
 	}
 
 	/**
