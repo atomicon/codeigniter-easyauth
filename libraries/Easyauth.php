@@ -86,6 +86,7 @@ class Easyauth
 						$this->set_user_id($user->id);
 						$this->set_user($user);
 						$this->set_last_login();
+						$user_id = $user->id;
 					}
 				}
 			}
