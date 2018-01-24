@@ -616,7 +616,6 @@ class Easyauth
 	{
 		if (!$this->_user)
 		{
-			$user_id = $this->user_id();
 			$query = $this->_ci->db->get_where($this->config('table'), array('id' => $this->user_id()), 1);
 			$this->_user = $query->row_object();
 		}
