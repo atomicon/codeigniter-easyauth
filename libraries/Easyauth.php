@@ -114,21 +114,27 @@ class Easyauth
 	function user_id()
 	{
 		$user_id = $this->_ci->session->userdata($this->config('session_key'));
-		if (!$user_id && $this->config('remember'))
+		if (!$user_id)
 		{
-			$remember_value = get_cookie($this->config('remember'));
-			if ($remember_value)
+			if ($this->config('remember'))
 			{
-				$query = $this->_ci->db->get_where($this->config('table'), array('remember' => $remember_value), 1);
-				$user = $query->row_object();
-				if ($user)
+				$remember_value = get_cookie($this->config('remember'));
+				if ($remember_value)
 				{
-					$this->set_user_id($user->id);
-					$this->set_user($user);
-					$this->set_remember_me();
-					$this->set_last_login();
+					$query = $this->_ci->db->get_where($this->config('table'), array('remember' => $remember_value), 1);
+					$user = $query->row_object();
+					if ($user)
+					{
+						$this->set_user_id($user->id);
+						$this->set_user($user);
+						$this->set_last_login();
+					}
 				}
 			}
+		}
+		else
+		{
+			$this->set_user_id($user_id);
 		}
 
 		if ($this->is_impersonating())
@@ -141,6 +147,7 @@ class Easyauth
 				$user_id = $user->id;
 			}
 		}
+
 		return $user_id;
 	}
 
@@ -609,6 +616,7 @@ class Easyauth
 	{
 		if (!$this->_user)
 		{
+			$user_id = $this->user_id();
 			$query = $this->_ci->db->get_where($this->config('table'), array('id' => $this->user_id()), 1);
 			$this->_user = $query->row_object();
 		}
