@@ -86,6 +86,7 @@ class Easyauth
 						$this->set_user_id($user->id);
 						$this->set_user($user);
 						$this->set_last_login();
+						$this->set_remember_me();
 						$user_id = $user->id;
 					}
 				}
@@ -513,6 +514,7 @@ class Easyauth
 			if ($this->_ci->db->update($this->config('table'), array('remember' => $remember_value), array('id' => $user->id)))
 			{
 				set_cookie($this->config('remember'), $remember_value, $this->config('cookie_expire', 60 * 60 * 24 * 365));
+				$this->_user->remember = $remember_value;
 				return true;
 			}
 		}
