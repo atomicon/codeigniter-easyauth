@@ -120,7 +120,7 @@ class Easyauth
 	 */
 	function logged_in()
 	{
-		return $this->user_id() !== false;
+		return is_numeric($this->user_id());
 	}
 
 	// functions (called by controllers) ====================================================================
