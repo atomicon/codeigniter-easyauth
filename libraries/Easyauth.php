@@ -146,7 +146,7 @@ class Easyauth
 			return false;
 		}
 
-		$time = strftime("%Y-%m-%d %H:%M:%S", time());
+		$time = date('Y-m-d H:i:s');
 		$data = array(
 			'email' => $email,
 			'password' => $this->encode($password),
@@ -488,7 +488,7 @@ class Easyauth
 			return false;
 		}
 
-		$data = array('last_login' => strftime("%Y-%m-%d %H:%M:%S", time()), );
+		$data = array('last_login' => date('Y-m-d H:i:s'), );
 
 		return $this->_ci->db->update($this->config('table'), $data, array('id' => $user->id), 1);
 	}
